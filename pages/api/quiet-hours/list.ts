@@ -3,7 +3,11 @@ import { createPagesServerClient } from '@supabase/auth-helpers-nextjs'
 import { getDatabase } from '@/lib/mongodb'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
+  console.log('Entering list API handler');
+
   if (req.method !== 'GET') {
+    console.log('Invalid method:', req.method);
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
