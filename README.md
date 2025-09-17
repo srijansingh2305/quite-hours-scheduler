@@ -1,101 +1,141 @@
-Here is a complete `README.md` file you can use for your project, structured clearly and concisely:
 
----
 
-````md
+```markdown
 # Quiet Hours Scheduler
 
-A web application that allows users to schedule silent-study time blocks. Users receive email notifications before their block starts.
+A web application that allows users to schedule quiet-study sessions, sends email reminders before the session starts, and provides an easy-to-use dashboard.
 
----
+## Features
 
-## 🚀 Features
+- User Authentication via Supabase
+- Schedule quiet hours
+- CRON job to send email reminders
+- Resend integration for sending emails
+- MongoDB for data storage
 
-- Authenticated user sessions (Supabase)
-- Silent study block creation
-- Email notifications using Resend API
-- Data storage in Supabase & MongoDB
+## Tech Stack
 
----
+- Next.js
+- Supabase Auth
+- MongoDB Atlas
+- Resend Email API
+- TypeScript
+- Node.js
 
-## ✅ Prerequisites
+## Environment Variables
 
-- Node.js (v16+)
-- NPM
-- Supabase account
-- Resend account
-- MongoDB (MongoDB Atlas is recommended)
-- Render account (for deployment)
+Create a `.env.local` file in the root directory with the following:
 
----
+```
 
-## ⚙️ Setup Instructions
+NEXT\_PUBLIC\_SUPABASE\_URL=[https://your-supabase-url.supabase.co](https://your-supabase-url.supabase.co)
+NEXT\_PUBLIC\_SUPABASE\_ANON\_KEY=your-supabase-anon-key
+SUPABASE\_SERVICE\_ROLE\_KEY=your-service-role-key
+MONGODB\_URI=mongodb+srv://your-mongodb-uri
+SUPABASE\_ACCESS\_TOKEN=your-supabase-access-token
+RESEND\_API\_KEY=your-resend-api-key
+FROM\_EMAIL=[onboarding@resend.dev](mailto:onboarding@resend.dev)
+NEXTAUTH\_URL=[http://localhost:3000](http://localhost:3000)
+NEXTAUTH\_SECRET=your-nextauth-secret
+CRON\_SECRET=your-cron-secret
 
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/your-username/quiet-hours-scheduler.git
-cd quiet-hours-scheduler
 ````
 
----
+## Setup
 
-### 2. Install Dependencies
+1. Clone the repository
 
-```bash
-npm install
+    ```
+    git clone https://github.com/your-username/quiet-hours-scheduler.git
+    cd quiet-hours-scheduler
+    ```
+
+2. Install dependencies
+
+    ```
+    npm install
+    ```
+
+3. Start development server
+
+    ```
+    npm run dev
+    ```
+
+4. Open in browser
+
+    ```
+    http://localhost:3000
+    ```
+
+## Testing Email & CRON
+
+### Test Email Sending
+
+Visit in browser:
+
+````
+
+[http://localhost:3000/api/test-email-simple](http://localhost:3000/api/test-email-simple)
+
 ```
 
----
+### Test Actual CRON Job
 
-### 3. Environment Variables
+Visit in browser:
 
-Create a `.env.local` file in the project root with the following variables:
-
-```env
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-public-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-
-# MongoDB
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-
-# Email Service (Resend)
-RESEND_API_KEY=your-resend-api-key
-FROM_EMAIL=noreply@yourdomain.com
-
-# App
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your-secret-key
 ```
 
-#### Where to get the keys:
+[http://localhost:3000/api/test-real-cron](http://localhost:3000/api/test-real-cron)
 
-* **Supabase Project URL & Anon Key**:
-  Login to [https://app.supabase.com](https://app.supabase.com) → Select your project → Settings → API → Copy `Project URL` and `anon public key`
+````
 
-* **Supabase Service Role Key**:
-  Login to [https://app.supabase.com](https://app.supabase.com) → Select your project → Settings → API → Copy `Service Role Key`
+## Data Model
 
-* **MongoDB URI**:
-  Go to [https://www.mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas) → Create a Cluster → Create a Database User → Copy the connection string
+MongoDB Collection: `quietHours`
 
-* **Resend API Key**:
-  Login to [https://resend.com](https://resend.com) → Go to API Keys section → Create a key → Copy token
+Example document:
 
-* **FROM\_EMAIL**:
-  Add and verify your domain in Resend → Use a verified domain as your `FROM_EMAIL`, e.g., `noreply@yourdomain.com`
+```json
+{
+  "_id": { "$oid": "..." },
+  "userId": "user-uuid",
+  "title": "Morning Study Session",
+  "startTime": { "$date": "..." },
+  "endTime": { "$date": "..." },
+  "emailSent": true,
+  "createdAt": { "$date": "..." }
+}
+````
 
----
+## Deployment to Render
 
-### 4. Development
+1. Go to [https://render.com](https://render.com)
+2. Create a new Web Service
+3. Connect your GitHub repository
+4. Set Environment:
 
-Start the development server:
+   * Build Command: `npm install && npm run build`
+   * Start Command: `npm start`
+5. Add environment variables in the Render dashboard matching your `.env.local`.
+6. Deploy
 
-```bash
-npm run dev
-```
+## Final Test Sequence
 
-Visit: [http://localhost:3000](http://localhost:3000)
-```
+1. Create a quiet hour scheduled a few minutes in the future from the dashboard
+
+2. Visit the endpoint:
+
+   ```
+   http://your-deployed-app-url/api/test-real-cron
+   ```
+
+3. Monitor your email inbox for the reminder
+
+4. Verify that the document field `emailSent` is now `true` in MongoDB Atlas
+
+## Notes
+
+* Ensure all environment variables are correctly set
+* Avoid hardcoded secrets in production
+
