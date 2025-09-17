@@ -13,38 +13,41 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  // Simple auth check - you might want to use a cron secret
-  const authHeader = req.headers.authorization
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET || 'your-cron-secret'}`) {
-    return res.status(401).json({ error: 'Unauthorized' })
-  }
-
   try {
     const db = await getDatabase()
     const collection = db.collection('quietHours')
 
-    // Find quiet hours starting in 10-11 minutes that haven't had emails sent
     const now = new Date()
-    const tenMinutesFromNow = new Date(now.getTime() + 10 * 60 * 1000)
-    const elevenMinutesFromNow = new Date(now.getTime() + 11 * 60 * 1000)
+    console.log('Current time:', now)
+
+    // For testing: look for sessions starting in the next 15 minutes that haven't had emails sent
+    const fifteenMinutesFromNow = new Date(now.getTime() + 15 * 60 * 1000)
+    console.log('Looking for sessions starting before:', fifteenMinutesFromNow)
 
     const upcomingQuietHours = await collection
       .find({
         startTime: {
-          $gte: tenMinutesFromNow,
-          $lt: elevenMinutesFromNow
+          $gte: now, // Must be in the future
+          $lte: fifteenMinutesFromNow // But within 15 minutes
         },
         emailSent: { $ne: true }
       })
       .toArray()
 
     console.log(`Found ${upcomingQuietHours.length} quiet hours needing email notifications`)
+    console.log('Quiet hours found:', upcomingQuietHours.map(qh => ({
+      id: qh._id,
+      title: qh.title,
+      startTime: qh.startTime,
+      emailSent: qh.emailSent
+    })))
 
     const results = []
 
     for (const qh of upcomingQuietHours) {
       try {
-        // Get user details from Supabase
+        console.log(`Processing quiet hour ${qh._id} for user ${qh.userId}`)
+        
         const { data: user, error: userError } = await supabaseAdmin.auth.admin.getUserById(qh.userId)
         
         if (userError || !user?.user?.email) {
@@ -52,7 +55,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           continue
         }
 
-        // Send email reminder
+        console.log(`Sending email to ${user.user.email} for session: ${qh.title}`)
+
         const emailResult = await sendQuietHourReminder(
           user.user.email,
           qh.title,
@@ -61,7 +65,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         )
 
         if (emailResult.success) {
-          // Mark as email sent
+          console.log(`Email sent successfully, updating database...`)
+          
           await collection.updateOne(
             { _id: qh._id },
             { $set: { emailSent: true } }

@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Here is a complete `README.md` file you can use for your project, structured clearly and concisely:
 
-## Getting Started
+---
 
-First, run the development server:
+````md
+# Quiet Hours Scheduler
+
+A web application that allows users to schedule silent-study time blocks. Users receive email notifications before their block starts.
+
+---
+
+## 🚀 Features
+
+- Authenticated user sessions (Supabase)
+- Silent study block creation
+- Email notifications using Resend API
+- Data storage in Supabase & MongoDB
+
+---
+
+## ✅ Prerequisites
+
+- Node.js (v16+)
+- NPM
+- Supabase account
+- Resend account
+- MongoDB (MongoDB Atlas is recommended)
+- Render account (for deployment)
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/quiet-hours-scheduler.git
+cd quiet-hours-scheduler
+````
+
+---
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+### 3. Environment Variables
+
+Create a `.env.local` file in the project root with the following variables:
+
+```env
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-public-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+# MongoDB
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+# Email Service (Resend)
+RESEND_API_KEY=your-resend-api-key
+FROM_EMAIL=noreply@yourdomain.com
+
+# App
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-secret-key
+```
+
+#### Where to get the keys:
+
+* **Supabase Project URL & Anon Key**:
+  Login to [https://app.supabase.com](https://app.supabase.com) → Select your project → Settings → API → Copy `Project URL` and `anon public key`
+
+* **Supabase Service Role Key**:
+  Login to [https://app.supabase.com](https://app.supabase.com) → Select your project → Settings → API → Copy `Service Role Key`
+
+* **MongoDB URI**:
+  Go to [https://www.mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas) → Create a Cluster → Create a Database User → Copy the connection string
+
+* **Resend API Key**:
+  Login to [https://resend.com](https://resend.com) → Go to API Keys section → Create a key → Copy token
+
+* **FROM\_EMAIL**:
+  Add and verify your domain in Resend → Use a verified domain as your `FROM_EMAIL`, e.g., `noreply@yourdomain.com`
+
+---
+
+### 4. Development
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Visit: [http://localhost:3000](http://localhost:3000)
+```

@@ -16,17 +16,57 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(401).json({ error: 'Unauthorized' })
     }
 
+    const { title, startTime, endTime, description } = req.body
+
+    const validation = validateQuietHour({ title, startTime, endTime })
+    if (!validation.isValid) {
+      return res.status(400).json({ error: validation.errors.join(', ') })
+    }
+
     const db = await getDatabase()
     const collection = db.collection('quietHours')
 
-    const quietHours = await collection
-      .find({ userId: user.id })
-      .sort({ startTime: 1 })
-      .toArray()
+    // Check for overlapping quiet hours for the same user
+    const start = new Date(startTime)
+    const end = new Date(endTime)
 
-    res.status(200).json({ success: true, quietHours })
+    const overlapping = await collection.findOne({
+      userId: user.id,
+      $or: [
+        {
+          startTime: { $lt: end },
+          endTime: { $gt: start }
+        }
+      ]
+    })
+
+    if (overlapping) {
+      return res.status(400).json({ error: 'You have an overlapping quiet hour during this time' })
+    }
+
+    const quietHour = {
+      userId: user.id,
+      title,
+      startTime: start,
+      endTime: end,
+      description: description || '',
+      emailSent: false,
+      createdAt: new Date(),
+    }
+    console.log('User:', user)
+    console.log('Request Body:', req.body)
+    console.log('Validation result:', validation)
+    console.log('Attempting to insert quiet hour...')
+
+
+    const result = await collection.insertOne(quietHour)
+
+    res.status(201).json({ 
+      success: true, 
+      quietHour: { ...quietHour, _id: result.insertedId } 
+    })
   } catch (error) {
-    console.error('List quiet hours error:', error)
+    console.error('Create quiet hour error:', error)
     res.status(500).json({ error: 'Internal server error' })
   }
 }

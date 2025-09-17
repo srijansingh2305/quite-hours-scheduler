@@ -24,6 +24,15 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+  "next-env.d.ts",
+  "**/*.ts",
+  "**/*.tsx",
+  ".next/types/**/*.ts",
+  "scripts/dev-cron.mjs",
+  "pages/api/test-cron.ts",
+  "scripts/db-test.ts"
+],
+
   "exclude": ["node_modules"]
 }

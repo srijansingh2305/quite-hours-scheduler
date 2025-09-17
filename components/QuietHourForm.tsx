@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { validateQuietHour } from '@/utils/validation'
+import { validateQuietHour } from '@/utils/validation';
 import toast from 'react-hot-toast'
 
 interface QuietHourFormProps {

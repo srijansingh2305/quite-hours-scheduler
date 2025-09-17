@@ -8,6 +8,9 @@ export async function sendQuietHourReminder(
   startTime: Date,
   endTime: Date
 ) {
+    console.log('Attempting to send email to:', email)
+    console.log('Resend API key present:', !!process.env.RESEND_API_KEY)
+    console.log('FROM_EMAIL:', process.env.FROM_EMAIL)
   const startTimeStr = startTime.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
@@ -51,8 +54,11 @@ export async function sendQuietHourReminder(
     }
 
     return { success: true, data }
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Email send error:', error)
+    if (error instanceof Error) {
+      return { success: false, error: error.message }
+    }
     return { success: false, error }
   }
 }
