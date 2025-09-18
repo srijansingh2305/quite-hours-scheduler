@@ -1,0 +1,151 @@
+.form {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 2rem;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.form h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: -0.025em;
+  position: relative;
+}
+
+.form h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  border-radius: 2px;
+}
+
+.group {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 0.5rem;
+  margin-left: 0.25rem;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  color: #2d3748;
+  font-family: inherit;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: #a0aec0;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Time inputs special styling */
+.input[type="datetime-local"] {
+  position: relative;
+  background: #ffffff;
+}
+
+.input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236366f1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'%3E%3C/path%3E%3C/svg%3E") no-repeat;
+  background-size: 20px 20px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Grid layout for time inputs on larger screens */
+@media (min-width: 640px) {
+  .timeGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+  .form {
+    padding: 2rem 1.5rem;
+  }
+  
+  .form h2 {
+    font-size: 1.5rem;
+  }
+}
+
+.form form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Add responsive grid for time inputs */
+.timeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .timeGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Enhanced focus states for better accessibility */
+.input:focus-visible,
+.textarea:focus-visible {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Success animation for form submission */
+@keyframes success {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.form.success {
+  animation: success 0.3s ease-out;
+}
