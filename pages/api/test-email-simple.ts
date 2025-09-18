@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log('FROM_EMAIL:', process.env.FROM_EMAIL)
     
     const result = await sendQuietHourReminder(
-      'srijansingh235@gmail.com', // Make sure this matches your actual email
+      'srijansingh235@gmail.com', 
       'Test Email from API',
       new Date(Date.now() + 10 * 60 * 1000),
       new Date(Date.now() + 70 * 60 * 1000)

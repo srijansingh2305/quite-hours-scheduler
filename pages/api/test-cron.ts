@@ -13,11 +13,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const db = await getDatabase()
     const collection = db.collection('quietHours')
 
-    // Find ALL quiet hours that haven't had emails sent (for testing)
+ 
     const upcomingQuietHours = await collection
       .find({
         emailSent: { $ne: true },
-        startTime: { $gt: new Date() } // Only future sessions
+        startTime: { $gt: new Date() } 
       })
       .toArray()
 
