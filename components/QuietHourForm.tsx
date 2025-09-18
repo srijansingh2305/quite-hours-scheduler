@@ -50,8 +50,12 @@ export default function QuietHourForm({ onSuccess }: QuietHourFormProps) {
       setEndTime('')
       setDescription('')
       onSuccess()
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to create quiet hour')
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error('Failed to create quiet hour')
+      }
     } finally {
       setLoading(false)
     }

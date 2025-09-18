@@ -25,7 +25,7 @@ export default function AuthForm({ mode, onSuccess }: AuthFormProps) {
             emailRedirectTo: `${window.location.origin}/api/auth/callback`
           }
         })
-        
+
         if (error) throw error
         toast.success('Check your email to confirm your account!')
       } else {
@@ -33,13 +33,15 @@ export default function AuthForm({ mode, onSuccess }: AuthFormProps) {
           email,
           password
         })
-        
+
         if (error) throw error
         toast.success('Signed in successfully!')
         onSuccess()
       }
-    } catch (error: any) {
-      toast.error(error.message || 'Authentication failed')
+    } catch (err) {
+      // Narrow error type safely
+      const error = err as { message?: string }
+      toast.error(error.message ?? 'Authentication failed')
     } finally {
       setLoading(false)
     }

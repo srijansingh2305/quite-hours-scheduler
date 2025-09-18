@@ -22,8 +22,12 @@ export default function QuietHoursList({ refresh, onRefresh }: QuietHoursListPro
       }
 
       setQuietHours(data.quietHours)
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to fetch quiet hours')
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error('Failed to fetch quiet hours')
+      }
     } finally {
       setLoading(false)
     }
@@ -47,8 +51,12 @@ export default function QuietHoursList({ refresh, onRefresh }: QuietHoursListPro
 
       toast.success('Quiet hour deleted successfully!')
       fetchQuietHours()
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to delete quiet hour')
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message)
+      } else {
+        toast.error('Failed to delete quiet hour')
+      }
     }
   }
 
