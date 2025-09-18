@@ -25,33 +25,68 @@ export default function Login() {
 
   return (
     <Layout>
-      <div className="max-w-md mx-auto">
-        <div className="bg-white p-8 rounded-lg shadow-sm border">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              {mode === 'login' ? 'Welcome Back' : 'Create Account'}
-            </h2>
-            <p className="text-gray-600">
-              {mode === 'login' 
-                ? 'Sign in to manage your quiet hours'
-                : 'Sign up to start scheduling your study sessions'
-              }
-            </p>
-          </div>
+      <div style={{
+        maxWidth: '420px',
+        margin: '0 auto',
+        background: 'rgba(255, 255, 255, 0.95)',
+        backdropFilter: 'blur(10px)',
+        borderRadius: '20px',
+        padding: '3rem 2.5rem',
+        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        animation: 'fadeIn 0.6s ease-out'
+      }}>
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <h2 style={{
+            fontSize: '2rem',
+            fontWeight: '700',
+            color: '#2d3748',
+            marginBottom: '0.5rem',
+            letterSpacing: '-0.025em'
+          }}>
+            {mode === 'login' ? 'Welcome Back' : 'Create Account'}
+          </h2>
+          <p style={{
+            color: '#4a5568',
+            fontSize: '1rem'
+          }}>
+            {mode === 'login' 
+              ? 'Sign in to manage your quiet hours'
+              : 'Sign up to start scheduling your study sessions'
+            }
+          </p>
+        </div>
 
-          <AuthForm mode={mode} onSuccess={handleAuthSuccess} />
+        <AuthForm mode={mode} onSuccess={handleAuthSuccess} />
 
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
-              className="text-indigo-600 hover:text-indigo-500 text-sm"
-            >
-              {mode === 'login' 
-                ? "Don't have an account? Sign up"
-                : "Already have an account? Sign in"
-              }
-            </button>
-          </div>
+        <div style={{
+          marginTop: '2rem',
+          textAlign: 'center'
+        }}>
+          <button
+            onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#6366f1',
+              fontSize: '0.9rem',
+              cursor: 'pointer',
+              padding: '0.5rem',
+              transition: 'color 0.2s ease',
+              fontWeight: '500'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#4f46e5'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = '#6366f1'
+            }}
+          >
+            {mode === 'login' 
+              ? "Don't have an account? Sign up"
+              : "Already have an account? Sign in"
+            }
+          </button>
         </div>
       </div>
     </Layout>
